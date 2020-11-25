@@ -36,11 +36,11 @@ void Instruction::SetFunct3(uint8_t f3) {
     this.funct3 = funct3;
 }
 
-void Instruction::SetRs1(uint8_t RS1) {
+void Instruction::SetRs1(uint8_t rs1) {
     this.rs1 = rs1;
 }
 
-void Instruction::SetRs2(uint8_t RS2) {
+void Instruction::SetRs2(uint8_t rs2) {
     this.rs2 = rs2;
 }
 
@@ -48,14 +48,14 @@ void Instruction::SetFunct7(uint8_t funct7) {
     this.funct7 = funct7;
 }
 
-void Instruction::SetImm(uint32_t IMM) {
+void Instruction::SetImm(uint32_t imm) {
     this.imm = imm;
 }
 
 void Instruction::SetCommand (const char* name, void (*cmd) (const Instruction*, State*))
 {
     this.name = name;
-    this.cmd = command;
+    this.cmd = cmd;
 }
 
 void Instruction::Exec(State *state) {
