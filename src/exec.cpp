@@ -121,17 +121,17 @@ void JALExec    (const Instruction* instr, MachineState* state) {
 void JALRExec   (const Instruction* instr, MachineState* state) {
    state->SetReg(instr->GetRd(), state->GetPc() + 4);
    state->SetPc(state->GetPc() + ((instr->GetRs1() + static_cast<int32_t>(instr->GetImm())) & 0xFFFFFFFE));  
-   if (instr->GetOppcode() == 0b1100111 && instr->GetRs1() == 1 && instr->GetRd() == 0)
+   if (instr->GetOppcode() == 0x67 && instr->GetRs1() == 1 && instr->GetRd() == 0)
        throw MachineException("Jumping to return address\n");
 }
 
 void SLLIExec   (const Instruction* instr, MachineState* state) {
-    state->SetReg(instr->GetRd(), instr->GetRs1() << (instr->GetImm() & 0b11111));
+    state->SetReg(instr->GetRd(), instr->GetRs1() << (instr->GetImm() & 0x1F));
     PC_next;
 }
 
 void SRLIExec   (const Instruction* instr, MachineState* state) {
-    state->SetReg(instr->GetRd(), instr->GetRs1() >> (instr->GetImm() & 0b11111));
+    state->SetReg(instr->GetRd(), instr->GetRs1() >> (instr->GetImm() & 0x1F));
     PC_next;
 }
 
@@ -176,12 +176,12 @@ void XORExec    (const Instruction* instr, MachineState* state) {
 }
 
 void SRLExec    (const Instruction* instr, MachineState* state) {
-    state->SetReg(instr->GetRd(), state->GetReg(instr->GetRs1()) >> (state->GetReg(instr->GetRs2()) & 0b11111));
+    state->SetReg(instr->GetRd(), state->GetReg(instr->GetRs1()) >> (state->GetReg(instr->GetRs2()) & 0x1F));
     PC_next;
 }
 
 void SRAExec    (const Instruction* instr, MachineState* state) {
-    uint8_t offs = state->GetReg(instr->GetRs2()) & 0b11111;
+    uint8_t offs = state->GetReg(instr->GetRs2()) & 0x1F;
     uint32_t sb_copy = static_cast<int8_t>(instr->GetRs1()) < 0 ? ~(~0xFFFFFFFF >> offs) : 0; 
     state->SetReg(instr->GetRd(), (state->GetReg(instr->GetRs1()) >> offs) | sb_copy);
     PC_next;
