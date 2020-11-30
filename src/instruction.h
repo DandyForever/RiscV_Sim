@@ -1,3 +1,7 @@
+#pragma once
+#include <stdint.h>
+#include "machine_state.h"
+
 class Instruction {
 private:
     uint8_t rd = 0;
@@ -7,11 +11,11 @@ private:
     uint8_t funct7 = 0;
     uint32_t imm = 0;
 
-    void (*cmd)(const Instruction *, State *);
+    void (*cmd)(const Instruction *, MachineState *);
 
     const char *name;
 public:
-    Instruction();
+    Instruction(){}
 
     uint8_t GetRd() const;
 
@@ -23,11 +27,11 @@ public:
 
     uint8_t GetFunct7() const;
 
-    uint16_t GetHash() const;
+    uint16_t GetHash(uint8_t opcode) const;
 
     uint32_t GetImm() const;
 
-    void Exec(State *state);
+    void Exec(MachineState *state);
 
     void SetRd(uint8_t rd);
 
@@ -41,7 +45,7 @@ public:
 
     void SetImm(uint32_t imm);
 
-    void SetCommand(const char *name, void (*cmd)(const Instruction *, State *));
+    void SetCommand(const char *name, void (*cmd)(const Instruction *, MachineState *));
 
     void PrintInstr(const bool is_verbose);
 };

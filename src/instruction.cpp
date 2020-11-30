@@ -1,6 +1,6 @@
 #include "instruction.h"
 
-uint16_t Instruction::GetHash() const {
+uint16_t Instruction::GetHash(uint8_t opcode) const {
     return (opcode >> 2) | (funct3 << 5) | (funct7 << 8);
 }
 
@@ -29,35 +29,35 @@ uint32_t Instruction::GetImm() const {
 }
 
 void Instruction::SetRd(uint8_t rd) {
-    this.rd = rd;
+    this->rd = rd;
 }
 
-void Instruction::SetFunct3(uint8_t f3) {
-    this.funct3 = funct3;
+void Instruction::SetFunct3(uint8_t funct3) {
+    this->funct3 = funct3;
 }
 
 void Instruction::SetRs1(uint8_t rs1) {
-    this.rs1 = rs1;
+    this->rs1 = rs1;
 }
 
 void Instruction::SetRs2(uint8_t rs2) {
-    this.rs2 = rs2;
+    this->rs2 = rs2;
 }
 
 void Instruction::SetFunct7(uint8_t funct7) {
-    this.funct7 = funct7;
+    this->funct7 = funct7;
 }
 
 void Instruction::SetImm(uint32_t imm) {
-    this.imm = imm;
+    this->imm = imm;
 }
 
-void Instruction::SetCommand (const char* name, void (*cmd) (const Instruction*, State*))
+void Instruction::SetCommand (const char* name, void (*cmd) (const Instruction*, MachineState*))
 {
-    this.name = name;
-    this.cmd = cmd;
+    this->name = name;
+    this->cmd = cmd;
 }
 
-void Instruction::Exec(State *state) {
+void Instruction::Exec(MachineState *state) {
     cmd(this, state);
 }

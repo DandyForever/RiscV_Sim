@@ -22,7 +22,7 @@ void MachineState::SetReg(uint8_t num, uint32_t value) {
 
 uint32_t MachineState::GetPC() { return pc; }
 
-uint32_t GetReg(uint8_t num) {
+uint32_t MachineState::GetReg(uint8_t num) {
     if (num >= regs_num)
         errx(EXIT_FAILURE, "Such register (%d) doesn't exist", num);
     return regs[num];

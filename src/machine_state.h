@@ -1,8 +1,14 @@
-
+#pragma once
+#include <vector>
+#include <unistd.h>
+#include <stdint.h>
+#include <string.h>
+#include <err.h>
+#include <stdlib.h>
 
 class MachineState{
 public:
-    const int regs_num = 32;
+    const size_t regs_num = 32;
 
     MachineState(uint32_t initial_pc, std::vector<uint32_t>& words);
     ~MachineState() {}

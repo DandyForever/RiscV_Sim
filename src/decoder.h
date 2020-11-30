@@ -1,3 +1,4 @@
+#pragma once
 #include <vector>
 #include <map>
 #include <iostream>
@@ -22,14 +23,14 @@ enum class Opcode : uint8_t {
 struct Command {
     const char *name;
 
-    void (*cmd)(const Instruction *, State *);
+    void (*cmd)(const Instruction *, MachineState *);
 
     Opcode opcode;
     uint8_t funct3 = 0;
     uint8_t funct7 = 0;
 };
 
-const CommandDescription CommandList[] = {
+const Command commandList[] = {
         {"LUI",   &LUIExec,   Opcode::LUI},
         {"AUIPC", &AUIPCExec, Opcode::AUIPC},
         {"JAL",   &JALExec,   Opcode::JAL},
@@ -48,15 +49,15 @@ const CommandDescription CommandList[] = {
         {"SB",    &SBExec,    Opcode::STORE},
         {"SH",    &SHExec,    Opcode::STORE,   0x1},
         {"SW",    &SWExec,    Opcode::STORE,   0x2},
-        {"ADDI",  &ADDIExec,  Opcode::OPP_IMM},
-        {"SLTI",  &SLTIExec,  Opcode::OPP_IMM, 0x2},
-        {"SLTIU", &SLTIUExec, Opcode::OPP_IMM, 0x3},
-        {"XORI",  &XORIExec,  Opcode::OPP_IMM, 0x4},
-        {"ORI",   &ORIExec,   Opcode::OPP_IMM, 0x6},
-        {"ANDI",  &ANDIExec,  Opcode::OPP_IMM, 0x7},
-        {"SLLI",  &SLLIExec,  Opcode::OPP_IMM, 0x1},
-        {"SRLI",  &SRLIExec,  Opcode::OPP_IMM, 0x5},
-        {"SRAI",  &SRAIExec,  Opcode::OPP_IMM, 0x5, 0x20},
+        {"ADDI",  &ADDIExec,  Opcode::OP_IMM},
+        {"SLTI",  &SLTIExec,  Opcode::OP_IMM, 0x2},
+        {"SLTIU", &SLTIUExec, Opcode::OP_IMM, 0x3},
+        {"XORI",  &XORIExec,  Opcode::OP_IMM, 0x4},
+        {"ORI",   &ORIExec,   Opcode::OP_IMM, 0x6},
+        {"ANDI",  &ANDIExec,  Opcode::OP_IMM, 0x7},
+        {"SLLI",  &SLLIExec,  Opcode::OP_IMM, 0x1},
+        {"SRLI",  &SRLIExec,  Opcode::OP_IMM, 0x5},
+        {"SRAI",  &SRAIExec,  Opcode::OP_IMM, 0x5, 0x20},
         {"ADD",   &ADDExec,   Opcode::OP},
         {"SUB",   &SUBExec,   Opcode::OP,      0x0, 0x20},
         {"SLL",   &SLLExec,   Opcode::OP,      0x1},
@@ -68,18 +69,18 @@ const CommandDescription CommandList[] = {
         {"OR",    &ORExec,    Opcode::OP,      0x6},
         {"AND",   &ANDExec,   Opcode::OP,      0x7},
         {"ECALL", &ECALLExec, Opcode::SYSTEM},
-        {"DUMMY", &DUMMYExec, Opcode::UNINIT}
+        {"DUMMY", &DUMMYExec, Opcode::LOAD}
 };
 
 
 class Decoder {
 private:
-    map <uint16_t, Command> orderedCommandList;
+    std::map <uint16_t, Command> orderedCommandList;
     uint16_t size = sizeof(commandList) / sizeof(Command);
 public:
     Decoder();
 
-    ~Decoder();
+    ~Decoder(){}
 
-    Instruction decode(uint32_t instr);
+    Instruction Decode(uint32_t instr);
 };

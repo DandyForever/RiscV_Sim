@@ -1,8 +1,9 @@
+#pragma once
 #include <cstdlib>
 #include "machine_state.h"
 #include <stdio.h>
-#include "aux.h"
-#include "decoder.h"
+#include "exception.h"
+#include "instruction.h"
 
 class Instruction;
 
