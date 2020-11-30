@@ -20,7 +20,7 @@ int main(int argc, char** argv)
         while (true)
         {
             decoded_instr = DCD.Decode(state.ReadWord(state.GetPC()));
-            //decoded_instr.PrintInstr(is_verbose);
+            decoded_instr.PrintInstr(is_verbose);
             decoded_instr.Exec(&state);
         }
     }
