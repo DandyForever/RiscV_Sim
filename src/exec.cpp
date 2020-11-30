@@ -85,32 +85,32 @@ void AUIPCExec  (const Instruction* instr, MachineState* state) {
 
 void BEQExec    (const Instruction* instr, MachineState* state) {
     state->GetReg(instr->GetRs1()) == state->GetReg(instr->GetRs2()) ? 
-    state->SetPc(state->GetPc() + (instr->GetImm() << 1)) : PC_next;
+    state->SetPC(state->GetPC() + (instr->GetImm() << 1)) : PC_next;
 }
 
 void BNEExec    (const Instruction* instr, MachineState* state) {
     state->GetReg(instr->GetRs1()) != state->GetReg(instr->GetRs2()) ?
-    state->SetPc(state->GetPc() + (instr->GetImm() << 1)) : PC_next; 
+    state->SetPC(state->GetPC() + (instr->GetImm() << 1)) : PC_next; 
 }
 
 void BLTExec    (const Instruction* instr, MachineState* state) {
     static_cast<int32_t>(state->GetReg(instr->GetRs1())) < static_cast<int32_t>(state->GetReg(instr->GetRs2())) ?
-    state->SetPc(state->GetPc() + (instr->GetImm() << 1)) : PC_next; 
+    state->SetPC(state->GetPC() + (instr->GetImm() << 1)) : PC_next; 
 }
 
 void BGEExec    (const Instruction* instr, MachineState* state) {
     static_cast<int32_t>(state->GetReg(instr->GetRs1())) >= static_cast<int32_t>(state->GetReg(instr->GetRs2())) ? 
-    state->SetPc(state->GetPc() + (static_cast<int32_t>(instr->GetImm()) << 1)) : PC_next; 
+    state->SetPC(state->GetPC() + (static_cast<int32_t>(instr->GetImm()) << 1)) : PC_next; 
 }
 
 void BLTUExec   (const Instruction* instr, MachineState* state) {
     state->GetReg(instr->GetRs1()) < state->GetReg(instr->GetRs2()) ? 
-    state->SetPc(state->GetPc() + (instr->GetImm() << 1)) : PC_next; 
+    state->SetPC(state->GetPC() + (instr->GetImm() << 1)) : PC_next; 
 }
 
 void BGEUExec   (const Instruction* instr, MachineState* state) {
     state->GetReg(instr->GetRs1()) > state->GetReg(instr->GetRs2()) ?
-    state->SetPc(state->GetPc() + (instr->GetImm() << 1)) : PC_next; 
+    state->SetPC(state->GetPC() + (instr->GetImm() << 1)) : PC_next; 
 }
 
 void JALExec    (const Instruction* instr, MachineState* state) {
@@ -119,10 +119,10 @@ void JALExec    (const Instruction* instr, MachineState* state) {
 }
 
 void JALRExec   (const Instruction* instr, MachineState* state) {
-   state->SetReg(instr->GetRd(), state->GetPc() + 4);
-   state->SetPc(state->GetPc() + ((instr->GetRs1() + static_cast<int32_t>(instr->GetImm())) & 0xFFFFFFFE));  
-   if (instr->GetOppcode() == 0x67 && instr->GetRs1() == 1 && instr->GetRd() == 0)
-       throw MachineException("Jumping to return address\n");
+   state->SetReg(instr->GetRd(), state->GetPC() + 4);
+   state->SetPC(state->GetPC() + ((instr->GetRs1() + static_cast<int32_t>(instr->GetImm())) & 0xFFFFFFFE));  
+   /*if (instr->GetOpcode() == 0x67 && instr->GetRs1() == 1 && instr->GetRd() == 0)
+       throw MachineException("Jumping to return address\n");*/
 }
 
 void SLLIExec   (const Instruction* instr, MachineState* state) {
