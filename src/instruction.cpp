@@ -64,53 +64,13 @@ void Instruction::Exec(MachineState *state) {
 
 void Instruction::PrintInstr (const bool is_verbose)
 {
-    printf ("%s\n", command_name);
     if (is_verbose)
     {
-        switch (type)
-        {
-            case InstrType::RType:
-                printf ("RType\n");
-                printf ("rd     : %u\n", rd);
-                printf ("funct3 : %u\n", funct3);
-                printf ("rs1    : %u\n", rs1);
-                printf ("rs2    : %u\n", rs2);
-                printf ("funct7 : %u\n", funct7);
-                break;
-            case InstrType::IType:
-                printf ("IType\n");
-                printf ("rd     : %u\n", rd);
-                printf ("funct3 : %u\n", funct3);
-                printf ("rs1    : %u\n", rs1);
-                printf ("imm    : %u\n", imm);
-                break;
-            case InstrType::SType:
-                printf ("SType\n");
-                printf ("funct3 : %u\n", funct3);
-                printf ("rs1    : %u\n", rs1);
-                printf ("rs2    : %u\n", rs2);
-                printf ("imm    : %u\n", imm);
-                break;
-            case InstrType::BType:
-                printf ("BType\n");
-                printf ("funct3 : %u\n", funct3);
-                printf ("rs1    : %u\n", rs1);
-                printf ("rs2    : %u\n", rs2);
-                printf ("imm    : %u\n", imm);
-                break;
-            case InstrType::UType:
-                printf ("UType\n");
-                printf ("rd     : %u\n", rd);
-                printf ("imm    : %u\n", imm);
-                break;
-            case InstrType::JType:
-                printf ("JType\n");
-                printf ("rd     : %u\n", rd);
-                printf ("imm    : %u\n", imm);
-                break;
-            default:
-                printf ("Type is undefined\n");
-        }
-        printf ("\n");
+        printf ("rd     : %u\n", rd);
+        printf ("funct3 : %u\n", funct3);
+        printf ("rs1    : %u\n", rs1);
+        printf ("rs2    : %u\n", rs2);
+        printf ("funct7 : %u\n", funct7);
+        printf ("imm    : %u\n\n", imm);
     }
 }

@@ -121,8 +121,8 @@ void JALExec    (const Instruction* instr, MachineState* state) {
 void JALRExec   (const Instruction* instr, MachineState* state) {
    state->SetReg(instr->GetRd(), state->GetPC() + 4);
    state->SetPC(state->GetPC() + ((instr->GetRs1() + static_cast<int32_t>(instr->GetImm())) & 0xFFFFFFFE));  
-   /*if (instr->GetOpcode() == 0x67 && instr->GetRs1() == 1 && instr->GetRd() == 0)
-       throw MachineException("Jumping to return address\n");*/
+   if (instr->GetRs1() == 1 && instr->GetRd() == 0)
+       throw MachineException("Jumping to return address\n");
 }
 
 void SLLIExec   (const Instruction* instr, MachineState* state) {

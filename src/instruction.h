@@ -1,6 +1,7 @@
 #pragma once
 #include <stdint.h>
 #include "machine_state.h"
+#include <stdio.h>
 
 class Instruction {
 private:
