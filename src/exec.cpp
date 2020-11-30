@@ -1,9 +1,9 @@
 #include "exec.h"
 
-#define PC_next state->SetPc(state->GetPc() + 4)
+#define PC_next state->SetPC(state->GetPC() + 4)
 
 void ADDIExec   (const Instruction* instr, MachineState* state) {
-    state->SetReg(instr->GetRd(), state->GetReg(instr->GetRs1()) + static_cast<int32_t>(instr->GetImm())); 
+    state->SetReg(instr->GetRd(), state->GetReg(instr->GetRs1()) + static_cast<int32_t>(instr->GetImm()));
     PC_next;
 }
 
@@ -79,7 +79,7 @@ void LUIExec    (const Instruction* instr, MachineState* state) {
 }
 
 void AUIPCExec  (const Instruction* instr, MachineState* state) {
-    state->SetReg (instr->GetRd(), (instr->GetImm() << 12) + state->GetPc());
+    state->SetReg (instr->GetRd(), (instr->GetImm() << 12) + state->GetPC());
     PC_next;
 }
 
@@ -114,8 +114,8 @@ void BGEUExec   (const Instruction* instr, MachineState* state) {
 }
 
 void JALExec    (const Instruction* instr, MachineState* state) {
-    state->SetReg(instr->GetRd(), state->GetPc() + 4);
-    state->SetPc(state->GetPc() + (static_cast<int32_t>(instr->GetImm()) << 1));
+    state->SetReg(instr->GetRd(), state->GetPC() + 4);
+    state->SetPC(state->GetPC() + (static_cast<int32_t>(instr->GetImm()) << 1));
 }
 
 void JALRExec   (const Instruction* instr, MachineState* state) {
@@ -157,14 +157,14 @@ void SLLExec    (const Instruction* instr, MachineState* state) {
 }
 
 void SLTExec    (const Instruction* instr, MachineState* state) {
-    static_cast<int32_t>(state->GetReg(instr->GetRs1())) < static_cast<int32_t>(state->GetReg(instr->GetRs2())) ? 
+    static_cast<int32_t>(state->GetReg(instr->GetRs1())) < static_cast<int32_t>(state->GetReg(instr->GetRs2())) ?
     state->SetReg(instr->GetRd(), 1):
     state->SetReg(instr->GetRd(), 0);
     PC_next;
 }
 
 void SLTUExec   (const Instruction* instr, MachineState* state) {
-    state->GetReg(instr->GetRs1()) < state->GetReg(instr->GetRs2()) ? 
+    state->GetReg(instr->GetRs1()) < state->GetReg(instr->GetRs2()) ?
     state->SetReg(instr->GetRd(), 1):
     state->SetReg(instr->GetRd(), 0);
     PC_next;
@@ -182,7 +182,7 @@ void SRLExec    (const Instruction* instr, MachineState* state) {
 
 void SRAExec    (const Instruction* instr, MachineState* state) {
     uint8_t offs = state->GetReg(instr->GetRs2()) & 0x1F;
-    uint32_t sb_copy = static_cast<int8_t>(instr->GetRs1()) < 0 ? ~(~0xFFFFFFFF >> offs) : 0; 
+    uint32_t sb_copy = static_cast<int8_t>(instr->GetRs1()) < 0 ? ~(~0xFFFFFFFF >> offs) : 0;
     state->SetReg(instr->GetRd(), (state->GetReg(instr->GetRs1()) >> offs) | sb_copy);
     PC_next;
 }
