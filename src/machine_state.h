@@ -5,17 +5,20 @@
 #include <string.h>
 #include <err.h>
 #include <stdlib.h>
+#include "mmu.h"
 
 class MachineState{
 public:
     const size_t regs_num = 32;
 
-    MachineState(uint32_t initial_pc, std::vector<uint32_t>& words);
+    MachineState(uint32_t initial_pc, std::vector<uint32_t>& words, uint32_t num_pages);
     ~MachineState() {}
 
+    void SetSatp(uint32_t value);
     void SetPC(uint32_t value);
     void SetReg(uint8_t num, uint32_t value);
     
+    uint32_t getSatp();
     uint32_t GetPC();
     uint32_t GetReg(uint8_t num);
 
@@ -26,11 +29,11 @@ public:
     uint16_t ReadHalfWord(uint32_t va);
     uint8_t ReadByte(uint32_t va);
 
-    //uint32_t Fetch(uint32_t va);
+    uint32_t Fetch(uint32_t va);
 
 private:
     uint32_t pc;
     uint32_t regs[32];
-    //MMU mmu;
-    std::vector<uint8_t> memory;
+    MMU mmu;
+    //std::vector<uint8_t> memory;
 };
