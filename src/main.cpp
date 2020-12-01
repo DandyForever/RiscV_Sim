@@ -10,9 +10,12 @@ int main(int argc, char** argv)
     std::vector<uint32_t> instr(ER.getWords());
 
     PC = ER.getPC();
-    MachineState state(PC, instr);
+    uint32_t num_pages = 24;
+    MachineState state(PC, instr, num_pages);
+    Simulator simulator = Simulator(state);
+    simulator.Execute();
     
-    Decoder DCD = Decoder ();
+    /*Decoder DCD = Decoder ();
     Instruction decoded_instr = Instruction ();
     bool is_verbose = true;
     try
@@ -28,6 +31,6 @@ int main(int argc, char** argv)
     {
         printf ("%s", exc.what());
     }
-    //state.MemDump();
+    //state.MemDump();*/
     return 0;
 }
