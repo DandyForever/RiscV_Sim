@@ -8,11 +8,11 @@ Instruction Decoder::Decode(uint32_t byte_instr) {
         instr.SetImm((0xFFFFF000 & byte_instr) >> 12);
         if (instr.GetImm() & 0x80000)
             instr.SetImm(instr.GetImm() | 0xFFF00000);
-    } else if (opcode == 0x6F){
+    } else if (opcode == 0x6F) {
         instr.SetRd((0xF80 & byte_instr) >> 7);
         instr.SetImm((0x7FE00000 & byte_instr) >> 21);
         instr.SetImm(instr.GetImm() | (0x100000 & byte_instr) >> 10);
-        instr.SetImm(instr.GetImm() | (0xFF000 & byte_instr));
+        instr.SetImm(instr.GetImm() | (0xFF000 & byte_instr) >> 1);
         instr.SetImm(instr.GetImm() | (0x80000000 & byte_instr) >> 12);
         if (0x80000000 & byte_instr)
             instr.SetImm(instr.GetImm() | 0xFFF00000);
@@ -37,7 +37,7 @@ Instruction Decoder::Decode(uint32_t byte_instr) {
         instr.SetImm((0xF80 & byte_instr) >> 7);
         instr.SetImm(instr.GetImm() | (0xFE000000 & byte_instr) >> 20);
         if (instr.GetImm() & 0x800)
-            instr.SetImm (instr.GetImm() | 0xFFFFF000);
+            instr.SetImm(instr.GetImm() | 0xFFFFF000);
     } else if (opcode == 0x63) {
         instr.SetFunct3((0x7000 & byte_instr) >> 12);
         instr.SetRs1((0xF8000 & byte_instr) >> 15);
@@ -47,7 +47,7 @@ Instruction Decoder::Decode(uint32_t byte_instr) {
         instr.SetImm(instr.GetImm() | (0x80 & byte_instr) << 3);
         instr.SetImm(instr.GetImm() | (0x80000000 & byte_instr) >> 20);
         if (instr.GetImm() & 0x800)
-            instr.SetImm (instr.GetImm() | 0xFFFFF000);
+            instr.SetImm(instr.GetImm() | 0xFFFFF000);
     }
 
     uint16_t hash = instr.GetHash(opcode);
@@ -60,7 +60,8 @@ Decoder::Decoder() {
     uint16_t hash = 0;
     orderedCommandList[0] = commandList[size - 1];
     for (unsigned int i = 0; i < size - 1; i++) {
-        hash = (static_cast<uint8_t>(commandList[i].opcode) >> 2) | (commandList[i].funct3 << 5) | (commandList[i].funct7 << 8);
+        hash = (static_cast<uint8_t>(commandList[i].opcode) >> 2) | (commandList[i].funct3 << 5) |
+               (commandList[i].funct7 << 8);
         orderedCommandList[hash] = commandList[i];
     }
 }
