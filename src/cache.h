@@ -38,7 +38,7 @@ public:
     value_t* get (const uint32_t& key) {
         if (in_cache(key)) {
             hits++;
-            return mem[key];
+            return &mem[key];
         }
         else {
             misses++;
