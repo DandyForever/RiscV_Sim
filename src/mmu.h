@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include <stdint.h>
-#include "simple_cache.h"
+#include "cache.h"
 
 class MMU {
 public:
@@ -39,9 +39,9 @@ private:
     uint32_t satp;
     std::vector<uint32_t> memory;
     uint64_t max_pa;
-    SimpleCache<uint32_t> R_TLB;
-    SimpleCache<uint32_t> W_TLB;
-    SimpleCache<uint32_t> X_TLB;
+    Cache<uint32_t> R_TLB;
+    Cache<uint32_t> W_TLB;
+    Cache<uint32_t> X_TLB;
 
     const uint32_t PAGESIZE = 4096;
     const uint32_t LEVELS = 2;

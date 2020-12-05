@@ -87,4 +87,32 @@ void ECALLExec(const Instruction *instr, MachineState *state);
 
 void DUMMYExec(const Instruction *instr, MachineState *state);
 
+void CSRRWExec(const Instruction *instr, MachineState *state);
 
+void CSRRSExec(const Instruction *instr, MachineState *state);
+
+void CSRRCExec(const Instruction *instr, MachineState *state);
+
+void CSRRWIExec(const Instruction *instr, MachineState *state);
+
+void CSRRSIExec(const Instruction *instr, MachineState *state);
+
+void CSRRCIExec(const Instruction *instr, MachineState *state);
+
+void MULExec(const Instruction *instr, MachineState *state);
+
+void MULHExec(const Instruction *instr, MachineState *state);
+
+void MULHSUExec(const Instruction *instr, MachineState *state);
+
+void MULHUExec(const Instruction *instr, MachineState *state);
+
+void DIVExec(const Instruction *instr, MachineState *state);
+
+void DIVUExec(const Instruction *instr, MachineState *state);
+
+void REMExec(const Instruction *instr, MachineState *state);
+
+void REMUEExec(const Instruction *instr, MachineState *state);
+
+void DUMMYExec(const Instruction *instr, MachineState *state);

@@ -204,3 +204,117 @@ void DUMMYExec  (const Instruction* instr, MachineState* state) {
 void ECALLExec  (const Instruction* instr, MachineState* state) {
     throw MachineException ("Finished execution!\n");
 }
+
+
+void MULExec    (const Instruction *instr, MachineState *state) {
+    state->SetReg(instr->GetRd(), state->GetReg(instr->GetRs1()) * state->GetReg(instr->GetRs2()));
+    PC_next;
+}
+
+void MULHExec   (const Instruction* instr, MachineState *state)
+{
+    state->SetReg(instr->GetRd(), ((static_cast<int64_t>(state->GetReg(instr->GetRs1())) * static_cast<int64_t>(state->GetReg(instr->GetRs1())))) >> 32);
+    PC_next;
+}
+
+void MULHSUExec (const Instruction* instr, MachineState *state)
+{
+    state->SetReg(instr->GetRd(), ((static_cast<int64_t>(state->GetReg(instr->GetRs1())) * static_cast<uint64_t>(state->GetReg(instr->GetRs2())))) >> 32);
+    PC_next;
+}
+
+void MULHUExec  (const Instruction* instr, MachineState *state)
+{
+    state->SetReg(instr->GetRd(), (static_cast<uint64_t>(state->GetReg(instr->GetRs1())) * static_cast<uint64_t>(state->GetReg(instr->GetRs2())) >> 32);
+    PC_next;
+}
+
+void DIVExec    (const Instruction* instr, MachineState *state)
+{
+    if (state->GetReg(instr->GetRs2() == 0)
+        throw CalcException("Division by zero!\n");
+    state->SetReg(instr->GetRd(), static_cast<int32_t>(state->GetReg(instr->GetRs1())) / static_cast<int32_t>(state->GetReg(instr->GetRs2())));
+    PC_next;
+}
+
+void DIVUExec   (const Instruction* instr, MachineState *state)
+{
+    state->SetReg(instr->GetRd(), state->GetReg(instr->GetRs2()) ? state->GetReg(instr->GetRs1()) / state->GetReg(instr->GetRs2()) : UINT32_MAX);
+    PC_next;
+}
+
+void REMExec    (const Instruction* instr, MachineState *state)
+{
+    if (state->GetReg(instr->GetRs2()) == 0)
+        state->SetReg(state->GetRd(), state->GetReg(instr->GetRs1()));
+    state->SetReg(state->GetRd(), static_cast<int32_t>(state->GetReg(instr->GetRs1())) % static_cast<int32_t>(state->GetReg(instr->GetRs2())));
+    PC_next;
+}
+
+void REMUExec   (const Instruction* instr, MachineState *state)
+{
+    state->SetReg(state->GetRd(), state->GetReg(instr->GetRs2())? state->GetReg(instr->GetRs1()) % state->GetReg(instr->GetRs2()) : state->GetReg(instr->GetRs1()));
+    PC_next;
+}
+
+/*void BASICDUMMY (const Instruction* instr, MachineState *state)
+{
+    SET_PC (GET_PC() + (cur_instr - first_instr) * 4);
+    CMD_incr(cur_instr - first_instr);
+}*/
+
+void CSRRWExec  (const Instruction* instr, MachineState *state)
+{
+    if (state->GetImm() != 0x180)
+        throw RegException("Only SATP system register is supported!\n");
+    state->SetReg(state->GetRd(), state->GetSatp());
+    state->SetSatp(state->GetReg(instr->GetRs1()));
+    PC_next;
+}
+
+void CSRRSExec  (const Instruction* instr, MachineState *state)
+{
+    if (state->GetImm() != 0x180)
+        throw RegException("Only SATP system register is supported!\n");
+    state->SetReg(state->GetRd(), state->GetSatp());
+    state->SetSatp(state->GetSatp() | state->GetReg(instr->GetRs1()));
+    PC_next;
+}
+
+void CSRRCExec  (const Instruction* instr, MachineState *state)
+{
+    if (state->GetImm() != 0x180)
+        throw RegException("Only SATP system register is supported!\n");
+    state->SetReg(state->GetRd(), state->GetSatp());
+    state->SetSatp(state->GetSatp() | (!state->GetReg(instr->GetRs1())));
+    PC_next;
+}
+
+void CSRRWIExec (const Instruction* instr, MachineState *state)
+{
+    if (state->GetImm() != 0x180)
+        throw RegException("Only SATP system register is supported!\n");
+    state->SetReg(state->GetRd(), state->GetSatp());
+    state->SetSatp(static_cast<uint32_t>(instr->GetRs1())); //the uimm is formally in rs1 field of I-TYPE instr
+    PC_next;
+}
+
+void CSRRSIExec (const Instruction* instr, MachineState *state)
+{
+    if (state->GetImm() != 0x180)
+        throw RegException("Only SATP system register is supported!\n");
+    state->SetReg(state->GetRd(), state->GetSatp());
+    state->SetSatp(state->GetSatp() | static_cast<uint32_t>(instr->GetRs1()));
+    PC_next;
+}
+
+void CSRRCIExec (const Instruction* instr, MachineState *state)
+{
+    if (state->GetImm() != 0x180)
+        throw RegException("Only SATP system register is supported!\n");
+    state->SetReg(state->GetRd(), state->GetSatp());
+    state->SetSatp(state->GetSatp() | (!static_cast<uint32_t>(state->GetReg(instr->GetRs1()))));
+    PC_next;
+}
+
+
