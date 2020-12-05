@@ -1,6 +1,7 @@
 #include "machine_state.h"
 
-MachineState::MachineState(uint32_t initial_pc, std::vector <uint32_t>&words, uint32_t num_pages) : pc(initial_pc), mmu(words, num_pages) {
+MachineState::MachineState(uint32_t initial_pc, std::vector <uint32_t> &words, uint32_t num_pages)
+: pc(initial_pc), mmu(words , num_pages) {
     for (size_t i = 0; i < regs_num; i++) {
         if (i == 2)
             regs[i] = 0x4ffc;
@@ -94,4 +95,13 @@ uint8_t MachineState::ReadByte(uint32_t va) {
 
 uint32_t MachineState::Fetch(uint32_t va) {
     return mmu.Fetch(va);
+}
+
+inline void MachineState::IncreaseCmdCount()
+{
+    cmd_counter++;
+}
+inline uint32_t MachineState::GetCmdCount ()
+{
+    return cmd_counter;
 }
