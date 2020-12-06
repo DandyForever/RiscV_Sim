@@ -113,6 +113,6 @@ void DIVUExec(const Instruction *instr, MachineState *state);
 
 void REMExec(const Instruction *instr, MachineState *state);
 
-void REMUEExec(const Instruction *instr, MachineState *state);
+void REMUExec(const Instruction *instr, MachineState *state);
 
 void DUMMYExec(const Instruction *instr, MachineState *state);

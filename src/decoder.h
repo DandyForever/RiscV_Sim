@@ -69,6 +69,20 @@ const Command commandList[] = {
         {"OR",    &ORExec,    Opcode::OP,      0x6},
         {"AND",   &ANDExec,   Opcode::OP,      0x7},
         {"ECALL", &ECALLExec, Opcode::SYSTEM},
+        {"CSRRW", &CSRRWExec, Opcode::SYSTEM,  0x1},
+        {"CSRRS", &CSRRSExec, Opcode::SYSTEM,  0x2},
+        {"CSRRC", &CSRRCExec, Opcode::SYSTEM,  0x3},
+        {"CSRRWI",&CSRRWIExec,Opcode::SYSTEM,  0x5},
+        {"CSRRSI",&CSRRSIExec,Opcode::SYSTEM,  0x6},
+        {"CSRRCI",&CSRRCIExec,Opcode::SYSTEM,  0x7},
+        {"MUL",   &MULExec,   Opcode::OP,      0x0, 0x1},
+        {"MULH",  &MULHExec,  Opcode::OP,      0x1, 0x1},
+        {"MULHSU",&MULHSUExec,Opcode::OP,      0x2, 0x1},
+        {"MULHU", &MULHUExec, Opcode::OP,      0x3, 0x1},
+        {"DIV",   &DIVExec,   Opcode::OP,      0x4, 0x1},
+        {"DIVU",  &DIVUExec,  Opcode::OP,      0x5, 0x1},
+        {"REM",   &REMExec,   Opcode::OP,      0x6, 0x1},
+        {"REMU",  &REMUExec,  Opcode::OP,      0x7, 0x1},
         {"DUMMY", &DUMMYExec, Opcode::LOAD}
 };
 

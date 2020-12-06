@@ -119,11 +119,11 @@ void JALExec    (const Instruction* instr, MachineState* state) {
 }
 
 void JALRExec   (const Instruction* instr, MachineState* state) {
-    std::cout << state->GetPC() << " before" << std::endl;
-    state->DumpRegs();
+    //std::cout << state->GetPC() << " before" << std::endl;
+    //state->DumpRegs();
    state->SetReg(instr->GetRd(), state->GetPC() + 4);
    state->SetPC(((state->GetReg(instr->GetRs1()) + static_cast<int32_t>(instr->GetImm())) & 0xFFFFFFFE));
-    std::cout << state->GetPC() << " after" << std::endl;
+    //std::cout << state->GetPC() << " after" << std::endl;
 }
 
 void SLLIExec   (const Instruction* instr, MachineState* state) {
@@ -183,7 +183,7 @@ void SRLExec    (const Instruction* instr, MachineState* state) {
 
 void SRAExec    (const Instruction* instr, MachineState* state) {
     uint8_t offs = state->GetReg(instr->GetRs2()) & 0x1F;
-    uint32_t sb_copy = static_cast<int8_t>(instr->GetRs1()) < 0 ? ~(~0xFFFFFFFF >> offs) : 0;
+    uint32_t sb_copy = static_cast<int8_t>(state->GetReg(instr->GetRs1())) < 0 ? ~(~0xFFFFFFFF >> offs) : 0;
     state->SetReg(instr->GetRd(), (state->GetReg(instr->GetRs1()) >> offs) | sb_copy);
     PC_next;
 }
