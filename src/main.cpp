@@ -3,23 +3,28 @@
 #include "exception.h"
 #include "simulator.h"
 #include <stdio.h>
+#include <chrono>
 
 int main(int argc, char** argv)
 {
     ElfManager ER(argv[1]);
     uint32_t PC = 0;
     std::vector<uint32_t> instr(ER.getWords());
-    std::cout << "I have read the words form ELF file" << std::endl;
+    //std::cout << "I have read the words form ELF file" << std::endl;
 
     PC = ER.getPC();
     uint32_t num_pages = 24;
     MachineState state(PC, instr, num_pages);
-    std::cout << "I initialized machine state" << std::endl;
+    //std::cout << "I initialized machine state" << std::endl;
     Simulator simulator = Simulator(state);
-    std::cout << "I initialized simulator" << std::endl;
+    //std::cout << "I initialized simulator" << std::endl;
+    std::chrono::high_resolution_clock::time_point t_start = std::chrono::high_resolution_clock::now();
     simulator.Execute();
     std::cout << "I executed all instructions " << std::dec << state.GetCmdCount() << std::endl;
-    
+    std::chrono::high_resolution_clock::time_point t_finish = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> ex_time = std::chrono::duration_cast<std::chrono::duration<double>>(t_finish - t_start);
+    std::cout << "Execution time is " << ex_time.count() << std::endl; 
+    std::cout << "Simulator performance is " << state.GetCmdCount() / ex_time.count() / 1000000 << " MIPS" << std::endl;
     /*Decoder DCD = Decoder ();
     Instruction decoded_instr = Instruction ();
     bool is_verbose = true;

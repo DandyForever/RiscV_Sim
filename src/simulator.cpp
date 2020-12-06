@@ -8,24 +8,25 @@ void Simulator::Execute() {
         uint32_t raw_instr;
         while (true) {
             addr = machine_state.GetPC();
-            std::cout << "Trying to read from IC " << std::dec << machine_state.GetCmdCount() << std::endl;
+            //if (machine_state.GetCmdCount() % 10000 == 0)
+            //    std::cout << std::dec << machine_state.GetCmdCount() << "\n";
             raw_instr_ = IC.get(addr);
             if (!raw_instr_) {
-                std::cout << "Trying to fetch the instruction" << std::endl;
+                //std::cout << "Trying to fetch the instruction" << std::endl;
                 raw_instr = machine_state.Fetch(addr);
-                std::cout << "Putting fetched instruction to IC" << std::endl;
+                //std::cout << "Putting fetched instruction to IC" << std::endl;
                 IC.put(addr, raw_instr);
             } else {
-                std::cout << "Trying to depointer raw_instr" << std::endl;
+                //std::cout << "Trying to depointer raw_instr" << std::endl;
                 raw_instr = *raw_instr_;
             }
-            std::cout << "raw instruction is ready and it is " << std::hex << raw_instr << std::endl;
+            //std::cout << "raw instruction is ready and it is " << std::hex << raw_instr << std::endl;
             instr = decoder.Decode(raw_instr);
-            std::cout << "decoded instruction is " << std::endl << std::endl;
-            instr.PrintInstr(true);
-            std::cout << std::endl;
+            //std::cout << "decoded instruction is " << std::endl << std::endl;
+            //instr.PrintInstr(true);
+            //std::cout << std::endl;
             instr.Exec(&machine_state);
-            machine_state.DumpRegs();
+            //machine_state.DumpRegs();
             machine_state.IncreaseCmdCount();
         }
     } catch (EndException& e) {

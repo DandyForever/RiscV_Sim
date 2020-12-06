@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include <map>
+#include <unordered_map>
 #include <iostream>
 #include "exec.h"
 #include "machine_state.h"
@@ -89,7 +89,7 @@ const Command commandList[] = {
 
 class Decoder {
 private:
-    std::map <uint16_t, Command> orderedCommandList;
+    std::unordered_map <uint16_t, Command> orderedCommandList;
     uint16_t size = sizeof(commandList) / sizeof(Command);
 public:
     Decoder();
