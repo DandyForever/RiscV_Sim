@@ -101,9 +101,9 @@ public:
         return mmu.Fetch(va);
     }
 
-    inline void IncreaseCmdCount()
+    inline void IncreaseCmdCount(uint32_t value)
     {
-        cmd_counter++;
+        cmd_counter += value;
     }
     inline uint32_t GetCmdCount ()
     {

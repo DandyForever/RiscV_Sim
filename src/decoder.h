@@ -23,7 +23,7 @@ enum class Opcode : uint8_t {
 struct Command {
     const char *name;
 
-    void (*cmd)(const Instruction *, MachineState *);
+    void (*cmd)(const Instruction *, const Instruction *, MachineState *);
 
     Opcode opcode;
     uint8_t funct3 = 0;
@@ -83,7 +83,7 @@ const Command commandList[] = {
         {"DIVU",  &DIVUExec,  Opcode::OP,      0x5, 0x1},
         {"REM",   &REMExec,   Opcode::OP,      0x6, 0x1},
         {"REMU",  &REMUExec,  Opcode::OP,      0x7, 0x1},
-        {"DUMMY", &DUMMYExec, Opcode::LOAD}
+        {"BBEN",  &BBENDExec, Opcode::LOAD}
 };
 
 

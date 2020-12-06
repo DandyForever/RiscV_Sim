@@ -11,8 +11,9 @@ private:
     uint8_t rs2 = 0;
     uint8_t funct7 = 0;
     uint32_t imm = 0;
+    bool BBEnd;
 
-    void (*cmd)(const Instruction *, MachineState *);
+    void (*cmd)(const Instruction *, const Instruction *, MachineState *);
 
     const char *name;
 public:
@@ -69,14 +70,24 @@ public:
         this->imm = imm;
     }
 
-    inline void SetCommand(const char *name, void (*cmd)(const Instruction *, MachineState *)) {
+    inline void SetCommand(const char *name, void (*cmd)(const Instruction *, const Instruction *, MachineState *)) {
         this->name = name;
         this->cmd = cmd;
     }
 
-    inline void Exec(MachineState *state) {
-        cmd(this, state);
+    inline void Exec(const Instruction* first, MachineState *state) const{
+        cmd(this, first, state);
     }
 
     void PrintInstr(const bool is_verbose);
+
+    inline void SetBBEnd(bool flag)
+    {
+        BBEnd = flag;
+    }
+
+    inline bool GetBBEnd () const
+    {
+        return BBEnd;
+    }
 };

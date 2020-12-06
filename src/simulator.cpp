@@ -4,30 +4,28 @@ void Simulator::Execute() {
     Instruction instr;
     try {
         uint32_t addr = 0;
-        uint32_t* raw_instr_;
-        uint32_t raw_instr;
+        BasicBlock* bb_;
+        BasicBlock bb;
         while (true) {
             addr = machine_state.GetPC();
             //if (machine_state.GetCmdCount() % 10000 == 0)
             //    std::cout << std::dec << machine_state.GetCmdCount() << "\n";
-            raw_instr_ = IC.get(addr);
-            if (!raw_instr_) {
+            bb_ = IC.get(addr);
+            if (!bb_) {
                 //std::cout << "Trying to fetch the instruction" << std::endl;
-                raw_instr = machine_state.Fetch(addr);
+                bb = BasicBlock(machine_state, decoder);
+                IC.put(addr, bb);
+                bb_ = &bb;
                 //std::cout << "Putting fetched instruction to IC" << std::endl;
-                IC.put(addr, raw_instr);
-            } else {
-                //std::cout << "Trying to depointer raw_instr" << std::endl;
-                raw_instr = *raw_instr_;
+                IC.put(addr, bb);
             }
+                //std::cout << "Trying to depointer raw_instr" << std::endl;
+            bb_->Execute(machine_state);
             //std::cout << "raw instruction is ready and it is " << std::hex << raw_instr << std::endl;
-            instr = decoder.Decode(raw_instr);
             //std::cout << "decoded instruction is " << std::endl << std::endl;
             //instr.PrintInstr(true);
             //std::cout << std::endl;
-            instr.Exec(&machine_state);
             //machine_state.DumpRegs();
-            machine_state.IncreaseCmdCount();
         }
     } catch (EndException& e) {
         std::cout << e.what() << std::endl;

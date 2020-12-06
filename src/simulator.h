@@ -2,6 +2,7 @@
 #include "machine_state.h"
 #include "decoder.h"
 #include "cache.h"
+#include "basic_block.h"
 
 class Simulator{
 public:
@@ -11,7 +12,7 @@ public:
     void Execute();
 
 private:
-    Cache<uint32_t> IC;
+    Cache<BasicBlock> IC;
     MachineState& machine_state;
     Decoder decoder;
 };
