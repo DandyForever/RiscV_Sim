@@ -1,3 +1,4 @@
+#pragma once
 #include <map>
 #include <queue>
 
@@ -28,10 +29,11 @@ public:
         if (!in_cache(key))
         {
             if (mem.size() == size) {
-                mem.erase(keys.pop());
+                mem.erase(keys.front());
+                keys.pop();
                 keys.push(key);
             }
-            mem.insert(key, value);
+            mem[key] = value;
         }
     }
 

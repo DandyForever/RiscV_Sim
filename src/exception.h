@@ -4,11 +4,11 @@
 #include <stdint.h>
 
 
-class FinishException : public std::exception {
+class EndException : public std::exception {
 private:
     const char *message;
 public:
-    FinishException(const char *msg) {
+    EndException(const char *msg) {
         message = msg;
     };
 
@@ -17,11 +17,11 @@ public:
     }
 };
 
-class DummyException : public std::exception {
+class SimpleException : public std::exception {
 private:
     const char *message;
 public:
-    DummyException(const char *msg) {
+    SimpleException(const char *msg) {
         message = msg;
     };
 
@@ -30,11 +30,11 @@ public:
     }
 };
 
-class CalcException : public std::exception {
+class ComputeException : public std::exception {
 private:
     const char *message;
 public:
-    CalcException(const char *msg) {
+    ComputeException(const char *msg) {
         message = msg;
     };
 
@@ -43,11 +43,11 @@ public:
     }
 };
 
-class RegException : public std::exception {
+class RegisterException : public std::exception {
 private:
     const char *message;
 public:
-    RegException(const char *msg) {
+    RegisterException(const char *msg) {
         message = msg;
     };
 
@@ -56,12 +56,12 @@ public:
     }
 };
 
-class OutOfMemException : public std::exception {
+class OutOfMemoryException : public std::exception {
 private:
     const char *message;
     uint64_t pa;
 public:
-    OutOfMemException(const char *msg, uint64_t pa_) {
+    OutOfMemoryException(const char *msg, uint64_t pa_) {
         message = msg;
         pa = pa_;
     };
@@ -98,13 +98,11 @@ class PageFaultException : public std::exception {
 private:
     const char *message;
     uint32_t pte;
-    uint64_t pte_addr;
 
 public:
-    PageFaultException(const char *msg, uint32_t pte_, uint64_t pte_addr_) {
+    PageFaultException(const char *msg, uint32_t pte_) {
         message = msg;
         pte = pte_;
-        pte_addr = pte_addr_;
     };
 
     const char *what() {
@@ -113,9 +111,5 @@ public:
 
     uint32_t GetPte() {
         return pte;
-    }
-
-    uint64_t GetPteAddr() {
-        return pte_addr;
     }
 };

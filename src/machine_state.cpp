@@ -12,7 +12,7 @@ MachineState::MachineState(uint32_t initial_pc, std::vector <uint32_t> &words, u
     //memcpy(&(memory[0]), (void *) words.data(), words.size() * sizeof(uint32_t));
 }
 
-void machineState::SetSatp(uint32_t value) { mmu.SetSatp(value); }
+void MachineState::SetSatp(uint32_t value) { mmu.SetSatp(value); }
 
 void MachineState::SetPC(uint32_t value) { pc = value; }
 
@@ -43,7 +43,7 @@ void MachineState::WriteWord(uint32_t va, uint32_t data) {
     memory[va + 1] = right_shifted_byte(data, 8);
     memory[va + 2] = right_shifted_byte(data, 16);
     memory[va + 3] = right_shifted_byte(data, 24);*/
-    mmu.writeWordVirtAddr(va, data);
+    mmu.WriteWordVirtAddr(va, data);
 }
 
 void MachineState::WriteHalfWord(uint32_t va, uint16_t data) {
@@ -97,11 +97,11 @@ uint32_t MachineState::Fetch(uint32_t va) {
     return mmu.Fetch(va);
 }
 
-inline void MachineState::IncreaseCmdCount()
+void MachineState::IncreaseCmdCount()
 {
     cmd_counter++;
 }
-inline uint32_t MachineState::GetCmdCount ()
+uint32_t MachineState::GetCmdCount ()
 {
     return cmd_counter;
 }

@@ -1,7 +1,9 @@
 #pragma once
 #include <vector>
 #include <stdint.h>
+#include <iostream>
 #include "cache.h"
+#include "exception.h"
 
 class MMU {
 public:
@@ -26,10 +28,10 @@ public:
 
     uint32_t ReadWordPhysAddr(uint64_t pa);
     uint32_t ReadWordVirtAddr(uint32_t va);
-    uint32_t ReadHalfWordPhysAddr(uint64_t va);
-    uint32_t ReadHalfWordVirtAddr(uint32_t va);
-    uint32_t ReadBytePhysAddr(uint64_t va);
-    uint32_t ReadByteVirtAddr(uint32_t va);
+    uint16_t ReadHalfWordPhysAddr(uint64_t va);
+    uint16_t ReadHalfWordVirtAddr(uint32_t va);
+    uint8_t ReadBytePhysAddr(uint64_t va);
+    uint8_t ReadByteVirtAddr(uint32_t va);
 
     uint32_t Fetch(uint32_t va);
 

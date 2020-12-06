@@ -5,13 +5,13 @@
 
 class Simulator{
 public:
-    Sim(MachineState& state): IC(), machine_state(state) {}
-    ~Sim();
+    Simulator(MachineState& state): IC(), machine_state(state) {}
+    ~Simulator() {}
 
     void Execute();
 
 private:
     Cache<uint32_t> IC;
-    MachineState machine_state;
+    MachineState& machine_state;
     Decoder decoder;
 };
