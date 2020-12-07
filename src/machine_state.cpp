@@ -8,8 +8,6 @@ MachineState::MachineState(uint32_t initial_pc, std::vector <uint32_t> &words, u
         else
             regs[i] = 0;
     }
-    //memory.resize(words.size() * sizeof(uint32_t));
-    //memcpy(&(memory[0]), (void *) words.data(), words.size() * sizeof(uint32_t));
 }
 
 

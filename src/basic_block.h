@@ -7,7 +7,7 @@
 class BasicBlock
 {
 private:
-    static const uint32_t block_size = 16;
+    static const uint32_t block_size = 8;
     std::array<Instruction, block_size + 1> instructions;
 public:
     BasicBlock() = default;

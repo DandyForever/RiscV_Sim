@@ -37,64 +37,29 @@ public:
     return regs[num];
 }
 
-//uint8_t right_shifted_byte(uint32_t data, size_t shift) { return (uint8_t)(data >> shift); }
 
     inline void WriteWord(uint32_t va, uint32_t data) {
-    /*if (va + 3 > memory.size())
-        errx(EXIT_FAILURE, "Such address (%#010x) is OOM", va);
-
-    memory[va] = right_shifted_byte(data, 0);
-    memory[va + 1] = right_shifted_byte(data, 8);
-    memory[va + 2] = right_shifted_byte(data, 16);
-    memory[va + 3] = right_shifted_byte(data, 24);*/
-    mmu.WriteWordVirtAddr(va, data);
-}
-
-    inline void WriteHalfWord(uint32_t va, uint16_t data) {
-    /*if (va + 1 > memory.size())
-        errx(EXIT_FAILURE, "Such address (%#010x) is OOM", va);
-
-    memory[va] = right_shifted_byte(data, 0);
-    memory[va + 1] = right_shifted_byte(data, 8);*/
-    mmu.WriteHalfWordVirtAddr(va, data);
-}
-
-    inline void WriteByte(uint32_t va, uint8_t data) {
-    /*if (va > memory.size())
-        errx(EXIT_FAILURE, "Such address (%#010x) is OOM", va);
-
-    memory[va] = right_shifted_byte(data, 0);*/
-        mmu.WriteByteVirtAddr(va, data);
+        mmu.WriteWordVirtAddr(va, data);
     }
 
-//uint32_t left_shifted_word(uint8_t data, size_t shift) { return (uint32_t) data << shift; }
+    inline void WriteHalfWord(uint32_t va, uint16_t data) {
+        mmu.WriteHalfWordVirtAddr(va, data);
+    }
+
+    inline void WriteByte(uint32_t va, uint8_t data) {
+       mmu.WriteByteVirtAddr(va, data);
+    }
 
     inline uint32_t ReadWord(uint32_t va) {
-    /*if (va + 3 > memory.size())
-        errx(EXIT_FAILURE, "Such address (%#010x) is OOM", va);
-
-    return left_shifted_word(memory[va + 3], 24) |
-           left_shifted_word(memory[va + 2], 16) |
-           left_shifted_word(memory[va + 1], 8) |
-           left_shifted_word(memory[va], 0);*/
-        return mmu.ReadWordVirtAddr(va);
+       return mmu.ReadWordVirtAddr(va);
     }
 
     inline uint16_t ReadHalfWord(uint32_t va) {
-    /*if (va + 1 > memory.size())
-        errx(EXIT_FAILURE, "Such address (%#010x) is OOM", va);
-
-    return (uint16_t)(left_shifted_word(memory[va + 1], 8) |
-                      left_shifted_word(memory[va], 0));*/
-        return mmu.ReadHalfWordVirtAddr(va);
+       return mmu.ReadHalfWordVirtAddr(va);
     }
 
     inline uint8_t ReadByte(uint32_t va) {
-    /*if (va > memory.size())
-        errx(EXIT_FAILURE, "Such address (%#010x) is OOM", va);
-
-    return memory[va];*/
-        return mmu.ReadByteVirtAddr(va);
+       return mmu.ReadByteVirtAddr(va);
     }
 
     inline uint32_t Fetch(uint32_t va) {
@@ -122,5 +87,4 @@ private:
     uint32_t regs[33];
     MMU mmu;
     uint32_t cmd_counter = 0;
-    //std::vector<uint8_t> memory;
 };
