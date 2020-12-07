@@ -199,7 +199,7 @@ uint64_t MMU::Translate(uint32_t va, Access access) {
     uint32_t pte;
 
     while (1) {
-        pte_addr = ppn + (level ? va >> 22 : ((va << 10) >> 22)) * PAGESIZE;
+        pte_addr = ppn + (level ? va >> 22 : ((va << 10) >> 22)) * PTESIZE;
         pte = ReadWordPhysAddr(pte_addr);
 
         if (!(pte & VBIT))

@@ -12,8 +12,6 @@ public:
 
     void Execute();
     
-    double bb_time;
-    double create_time;
 private:
     Cache<BasicBlock> IC;
     MachineState& machine_state;

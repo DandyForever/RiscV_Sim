@@ -133,11 +133,8 @@ void JALExec    (const Instruction* instr, const Instruction* first, MachineStat
 }
 
 void JALRExec   (const Instruction* instr, const Instruction* first, MachineState* state) {
-    //std::cout << state->GetPC() << " before" << std::endl;
-    //state->DumpRegs();
-   state->SetReg(instr->GetRd(), state->GetPC() + (instr - first) * 4 + 4);
-   state->SetPC(((state->GetReg(instr->GetRs1()) + static_cast<int32_t>(instr->GetImm())) & 0xFFFFFFFE));
-    //std::cout << state->GetPC() << " after" << std::endl;
+    state->SetReg(instr->GetRd(), state->GetPC() + (instr - first) * 4 + 4);
+    state->SetPC(((state->GetReg(instr->GetRs1()) + static_cast<int32_t>(instr->GetImm())) & 0xFFFFFFFE));
     state->IncreaseCmdCount(instr - first + 1);
 }
 
@@ -212,10 +209,6 @@ void ANDExec    (const Instruction* instr, const Instruction* first, MachineStat
     state->SetReg(instr->GetRd(), state->GetReg(instr->GetRs1()) & state->GetReg(instr->GetRs2()));
     PC_next;
 }
-/*
-void DUMMYExec  (const Instruction* instr, const Instruction* first, MachineState* state) {
-    printf ("Empty instruction");
-}*/
 
 void ECALLExec  (const Instruction* instr, const Instruction* first, MachineState* state) {
     state->IncreaseCmdCount(instr - first + 1);
@@ -274,12 +267,6 @@ void REMUExec   (const Instruction* instr, const Instruction* first, MachineStat
     PC_next;
 }
 
-/*void BASICDUMMY (const Instruction* instr, const Instruction* first, MachineState* state)
-{
-    SET_PC (GET_PC() + (cur_instr - first_instr) * 4);
-    CMD_incr(cur_instr - first_instr);
-}*/
-
 void CSRRWExec  (const Instruction* instr, const Instruction* first, MachineState* state)
 {
     if (instr->GetImm() != 0x180)
@@ -312,7 +299,7 @@ void CSRRWIExec (const Instruction* instr, const Instruction* first, MachineStat
     if (instr->GetImm() != 0x180)
         throw RegisterException("Only SATP system register is supported!\n");
     state->SetReg(instr->GetRd(), state->GetSatp());
-    state->SetSatp(static_cast<uint32_t>(instr->GetRs1())); //the uimm is formally in rs1 field of I-TYPE instr
+    state->SetSatp(static_cast<uint32_t>(instr->GetRs1()));
     PC_next;
 }
 
@@ -330,7 +317,7 @@ void CSRRCIExec (const Instruction* instr, const Instruction* first, MachineStat
     if (instr->GetImm() != 0x180)
         throw RegisterException("Only SATP system register is supported!\n");
     state->SetReg(instr->GetRd(), state->GetSatp());
-    state->SetSatp(state->GetSatp() | (!static_cast<uint32_t>(state->GetReg(instr->GetRs1()))));
+    state->SetSatp(state->GetSatp() | (!static_cast<uint32_t>(instr->GetRs1())));
     PC_next;
 }
 
