@@ -10,7 +10,7 @@ CFLAGS = -Wall -Wextra -O3
 LDFLAGS =
 LIBS = -lelf
 
-build_src: $(OBJ_FILES)
+simulator: $(OBJ_FILES)
 	@$(CC) $(LDFLAGS) -o ./simulator $^ $(LIBS)
 
 $(BUILD_HOME)/%.o: $(SRC_HOME)/%.cpp create_dirs
