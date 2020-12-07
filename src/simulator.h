@@ -3,6 +3,7 @@
 #include "decoder.h"
 #include "cache.h"
 #include "basic_block.h"
+#include <chrono>
 
 class Simulator{
 public:
@@ -10,7 +11,9 @@ public:
     ~Simulator() {}
 
     void Execute();
-
+    
+    double bb_time;
+    double create_time;
 private:
     Cache<BasicBlock> IC;
     MachineState& machine_state;
