@@ -7,7 +7,6 @@ OBJ_FILES = $(patsubst $(SRC_HOME)/%.cpp,$(BUILD_HOME)/%.o,$(SRC_FILES))
 
 CC = g++
 CFLAGS = -Wall -Wextra -O3
-LDFLAGS =
 LIBS = -lelf
 
 simulator: $(OBJ_FILES)
