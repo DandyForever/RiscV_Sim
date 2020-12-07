@@ -73,7 +73,7 @@ Instruction Decoder::Decode(uint32_t byte_instr) {
 Decoder::Decoder() {
     uint16_t hash = 0;
     orderedCommandList[0] = commandList[size - 1];
-    for (unsigned int i = 0; i < size - 1; i++) {
+    for (int i = 0; i < size - 1; i++) {
         hash = (static_cast<uint8_t>(commandList[i].opcode) >> 2) | (commandList[i].funct3 << 5) |
                (commandList[i].funct7 << 8);
         orderedCommandList[hash] = commandList[i];

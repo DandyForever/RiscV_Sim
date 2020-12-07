@@ -16,7 +16,7 @@ READELF = riscv64-unknown-linux-gnu-readelf
 RISCV_CFLAGS = -mabi=ilp32 -march=rv32i -nostdlib
 
 CC = g++
-CFLAGS = -Wall -Wextra
+CFLAGS = -Wall -Wextra -O3
 LDFLAGS =
 LIBS = -lelf
 

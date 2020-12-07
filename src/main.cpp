@@ -7,11 +7,14 @@
 
 int main(int argc, char** argv)
 {
+    if (argc != 2) {
+        std::cout << "Argument was not found" << std::endl;
+        return 1;
+    }
     ElfManager ER(argv[1]);
     uint32_t PC = 0;
     std::vector<uint32_t> instr(ER.getWords());
     //std::cout << "I have read the words form ELF file" << std::endl;
-
     PC = ER.getPC();
     uint32_t num_pages = 24;
     MachineState state(PC, instr, num_pages);
@@ -19,22 +22,5 @@ int main(int argc, char** argv)
     Simulator simulator = Simulator(state);
     //std::cout << "I initialized simulator" << std::endl;
     simulator.Execute();
-    /*Decoder DCD = Decoder ();
-    Instruction decoded_instr = Instruction ();
-    bool is_verbose = true;
-    try
-    {
-        while (true)
-        {
-            decoded_instr = DCD.Decode(state.ReadWord(state.GetPC()));
-            decoded_instr.PrintInstr(is_verbose);
-            decoded_instr.Exec(&state);
-        }
-    }
-    catch (MachineException &exc)
-    {
-        printf ("%s", exc.what());
-    }
-    //state.MemDump();*/
     return 0;
 }
