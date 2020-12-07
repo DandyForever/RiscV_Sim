@@ -20,3 +20,4 @@ create_dirs:
 
 clean:
 	@rm -rf $(BUILD_HOME)
+	@rm $(PROJECT_HOME)/simulator
