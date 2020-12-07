@@ -85,7 +85,7 @@ void ANDExec(const Instruction* instr, const Instruction* first, MachineState* s
 
 void ECALLExec(const Instruction* instr, const Instruction* first, MachineState* state);
 
-void DUMMYExec(const Instruction* instr, const Instruction* first, MachineState* state);
+//void DUMMYExec(const Instruction* instr, const Instruction* first, MachineState* state);
 
 void CSRRWExec(const Instruction* instr, const Instruction* first, MachineState* state);
 

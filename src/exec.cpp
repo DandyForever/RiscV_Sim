@@ -212,10 +212,10 @@ void ANDExec    (const Instruction* instr, const Instruction* first, MachineStat
     state->SetReg(instr->GetRd(), state->GetReg(instr->GetRs1()) & state->GetReg(instr->GetRs2()));
     PC_next;
 }
-
+/*
 void DUMMYExec  (const Instruction* instr, const Instruction* first, MachineState* state) {
     printf ("Empty instruction");
-}
+}*/
 
 void ECALLExec  (const Instruction* instr, const Instruction* first, MachineState* state) {
     state->IncreaseCmdCount(instr - first + 1);

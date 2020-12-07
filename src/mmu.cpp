@@ -150,7 +150,7 @@ uint16_t MMU::ReadHalfWordVirtAddr(uint32_t va) {
             pa = (*ppn << 12) | (va & 0xfff);
     }
 
-    ReadHalfWordPhysAddr(pa);
+    return ReadHalfWordPhysAddr(pa);
 
 }
 
@@ -178,7 +178,7 @@ uint8_t MMU::ReadByteVirtAddr(uint32_t va) {
             pa = (*ppn << 12) | (va & 0xfff);
     }
 
-    ReadBytePhysAddr(pa);
+    return ReadBytePhysAddr(pa);
 
 }
 
@@ -212,10 +212,10 @@ uint64_t MMU::Translate(uint32_t va, Access access) {
         if (!(pte & VBIT))
             throw PageFaultException("Page fault\n", pte);
 
-        if (!(pte & RBIT) && (pte & WBIT == WBIT))
+        if (!(pte & RBIT) && ((pte & WBIT) == WBIT))
             throw PageFaultException("Page fault: WRITE access but not READ", pte);
         
-        if ((pte & RBIT == RBIT) || (pte & XBIT == XBIT))
+        if (((pte & RBIT) == RBIT) || ((pte & XBIT) == XBIT))
             break;
 
         if (--level < 0)
