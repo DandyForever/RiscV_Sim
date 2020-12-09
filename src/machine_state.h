@@ -50,16 +50,31 @@ public:
        mmu.WriteByteVirtAddr(va, data);
     }
 
-    inline uint32_t ReadWord(uint32_t va) {
-       return mmu.ReadWordVirtAddr(va);
+    inline std::pair<bool, uint32_t> ReadWord(uint32_t va) {
+        try {
+            return {true, mmu.ReadWordVirtAddr(va)};
+        } catch (PageFaultException& e) {
+            std::cout << e.what() << " pte: " << e.GetPte() << std::endl;
+            return {false, 0};
+        }
     }
 
-    inline uint16_t ReadHalfWord(uint32_t va) {
-       return mmu.ReadHalfWordVirtAddr(va);
+    inline std::pair<bool, uint16_t> ReadHalfWord(uint32_t va) {
+        try {
+            return {true, mmu.ReadHalfWordVirtAddr(va)};
+        } catch (PageFaultException& e) {
+            std::cout << e.what() << " pte: " << e.GetPte() << std::endl;
+            return {false, 0};
+        }
     }
 
-    inline uint8_t ReadByte(uint32_t va) {
-       return mmu.ReadByteVirtAddr(va);
+    inline std::pair<bool, uint8_t> ReadByte(uint32_t va) {
+        try {
+            return {true, mmu.ReadByteVirtAddr(va)};
+        } catch (PageFaultException& e) {
+            std::cout << e.what() << " pte: " << e.GetPte() << std::endl;
+            return {false, 0};
+        }
     }
 
     inline uint32_t Fetch(uint32_t va) {

@@ -158,12 +158,7 @@ uint16_t MMU::ReadHalfWordVirtAddr(uint32_t va) {
     else {
         ppn = R_TLB.get(va >> 12);
         if (!ppn) {
-            try {
-                pa = Translate(va, READ);
-            } catch (PageFaultException& e) {
-                std::cout << e.what() << " pte: " << e.GetPte() << std::endl;
-                return 0;
-            }
+            pa = Translate(va, READ);
             R_TLB.put(va >> 12, pa >> 12);
         } else
             pa = (*ppn << 12) | (va & 0xfff);
@@ -190,12 +185,7 @@ uint8_t MMU::ReadByteVirtAddr(uint32_t va) {
     else {
         ppn = R_TLB.get(va >> 12);
         if (!ppn) {
-            try {
-                pa = Translate(va, READ);
-            } catch (PageFaultException& e) {
-                std::cout << e.what() << " pte: " << e.GetPte() << std::endl;
-                return 0;
-            }
+            pa = Translate(va, READ);
             R_TLB.put(va >> 12, pa >> 12);
         } else
             pa = (*ppn << 12) | (va & 0xfff);

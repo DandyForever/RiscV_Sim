@@ -48,27 +48,37 @@ void SWExec     (const Instruction* instr, const Instruction* first, MachineStat
 }
 
 void LBExec     (const Instruction* instr, const Instruction* first, MachineState* state) {
-    state->SetReg(instr->GetRd(), static_cast<int32_t>(static_cast<int8_t>(state->ReadByte (instr->GetImm() + state->GetReg(instr->GetRs1())))));
+    auto tmp = state->ReadByte (instr->GetImm() + state->GetReg(instr->GetRs1()));
+    if (tmp.first)
+        state->SetReg(instr->GetRd(), static_cast<int32_t>(static_cast<int8_t>(tmp.second)));
     PC_next;
 }
 
 void LHExec     (const Instruction* instr, const Instruction* first, MachineState* state) {
-    state->SetReg(instr->GetRd(), static_cast<int32_t>(static_cast<int16_t>(state->ReadHalfWord (instr->GetImm() + state->GetReg(instr->GetRs1())))));
+    auto tmp = state->ReadHalfWord (instr->GetImm() + state->GetReg(instr->GetRs1()));
+    if (tmp.first)
+        state->SetReg(instr->GetRd(), static_cast<int32_t>(static_cast<int16_t>(tmp.second)));
     PC_next;
 }
 
 void LWExec     (const Instruction* instr, const Instruction* first, MachineState* state) {
-    state->SetReg(instr->GetRd(), static_cast<int32_t>(state->ReadWord (instr->GetImm() + state->GetReg(instr->GetRs1()))));
+    auto tmp = state->ReadWord (instr->GetImm() + state->GetReg(instr->GetRs1()));
+    if (tmp.first)
+        state->SetReg(instr->GetRd(), static_cast<int32_t>(tmp.second));
     PC_next;
 }
 
 void LBUExec    (const Instruction* instr, const Instruction* first, MachineState* state) {
-    state->SetReg(instr->GetRd(), static_cast <uint32_t>(state->ReadByte (instr->GetImm() + state->GetReg(instr->GetRs1()))));
+    auto tmp = state->ReadByte (instr->GetImm() + state->GetReg(instr->GetRs1()));
+    if (tmp.first)
+        state->SetReg(instr->GetRd(), static_cast <uint32_t>(tmp.second));
     PC_next;
 }
 
 void LHUExec    (const Instruction* instr, const Instruction* first, MachineState* state) {
-    state->SetReg(instr->GetRd(), static_cast <uint32_t>(state->ReadHalfWord (instr->GetImm() + state->GetReg(instr->GetRs1()))));
+    auto tmp = state->ReadHalfWord (instr->GetImm() + state->GetReg(instr->GetRs1()));
+    if (tmp.first)
+        state->SetReg(instr->GetRd(), static_cast <uint32_t>(tmp.second));
     PC_next;
 }
 
