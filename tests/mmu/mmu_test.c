@@ -18,9 +18,11 @@ int main()
 	EnableTranslation();
 	
 
-	*(uint32_t*)0x0100faa0 = 0xdeadbeef;
-	if(*(uint32_t*)0x80200aa0 != 0xdeadbeef)
-		while(1) {}
+	//*(uint32_t*)0x0100faa0 = 0xdeadbeef;
+	*(uint32_t*)0x1100 = 0xdeadbeef;
+	
+    //if(*(uint32_t*)0x80200aa0 != 0xdeadbeef)
+	//	while(1) {}
 
     /*DisableTranslation();
     *(uint32_t*)0xfaa0 = 0xdeadbeef;

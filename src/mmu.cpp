@@ -29,7 +29,12 @@ void MMU::WriteWordVirtAddr(uint32_t va, uint32_t data) {
     else {
         ppn = W_TLB.get(va >> 12);
         if (!ppn) {
-            pa = Translate(va, WRITE);
+            try {
+                pa = Translate(va, WRITE);
+            } catch (PageFaultException& e) {
+                std::cout << e.what() << " pte: " << e.GetPte() << std::endl;
+                return;
+            }
             W_TLB.put(va >> 12, pa >> 12);
         } else
             pa = (*ppn << 12) | (va & 0xfff);
@@ -57,7 +62,12 @@ void MMU::WriteHalfWordVirtAddr(uint32_t va, uint16_t data) {
     else {
         ppn = W_TLB.get(va >> 12);
         if (!ppn) {
-            pa = Translate(va, WRITE);
+            try {
+                pa = Translate(va, WRITE);
+            } catch (PageFaultException& e) {
+                std::cout << e.what() << " pte: " << e.GetPte() << std::endl;
+                return;
+            }
             W_TLB.put(va >> 12, pa >> 12);
         } else
             pa = (*ppn << 12) | (va & 0xfff);
@@ -82,7 +92,12 @@ void MMU::WriteByteVirtAddr(uint32_t va, uint8_t data) {
     else {
         ppn = W_TLB.get(va >> 12);
         if (!ppn) {
-            pa = Translate(va, WRITE);
+            try {
+                pa = Translate(va, WRITE);
+            } catch (PageFaultException& e) {
+                std::cout << e.what() << " pte: " << e.GetPte() << std::endl;
+                return;
+            }
             W_TLB.put(va >> 12, pa >> 12);
         } else
             pa = (*ppn << 12) | (va & 0xfff);
@@ -109,7 +124,12 @@ uint32_t MMU::ReadWordVirtAddr(uint32_t va) {
     else {
         ppn = R_TLB.get(va >> 12);
         if (!ppn) {
-            pa = Translate(va, READ);
+            try {
+                pa = Translate(va, READ);
+            } catch (PageFaultException& e) {
+                std::cout << e.what() << " pte: " << e.GetPte() << std::endl;
+                return 0;
+            }
             R_TLB.put(va >> 12, pa >> 12);
         } else
             pa = (*ppn << 12) | (va & 0xfff);
@@ -138,7 +158,12 @@ uint16_t MMU::ReadHalfWordVirtAddr(uint32_t va) {
     else {
         ppn = R_TLB.get(va >> 12);
         if (!ppn) {
-            pa = Translate(va, READ);
+            try {
+                pa = Translate(va, READ);
+            } catch (PageFaultException& e) {
+                std::cout << e.what() << " pte: " << e.GetPte() << std::endl;
+                return 0;
+            }
             R_TLB.put(va >> 12, pa >> 12);
         } else
             pa = (*ppn << 12) | (va & 0xfff);
@@ -165,7 +190,12 @@ uint8_t MMU::ReadByteVirtAddr(uint32_t va) {
     else {
         ppn = R_TLB.get(va >> 12);
         if (!ppn) {
-            pa = Translate(va, READ);
+            try {
+                pa = Translate(va, READ);
+            } catch (PageFaultException& e) {
+                std::cout << e.what() << " pte: " << e.GetPte() << std::endl;
+                return 0;
+            }
             R_TLB.put(va >> 12, pa >> 12);
         } else
             pa = (*ppn << 12) | (va & 0xfff);
@@ -183,7 +213,12 @@ uint32_t MMU::Fetch(uint32_t va) {
     else {
         ppn = X_TLB.get(va >> 12);
         if (!ppn) {
-            pa = Translate(va, EXEC);
+            try {
+                pa = Translate(va, EXEC);
+            } catch (PageFaultException& e) {
+                std::cout << e.what() << " pte: " << e.GetPte() << std::endl;
+                return 0;
+            }
             X_TLB.put(va >> 12, pa >> 12);
         } else
             pa = (*ppn << 12) | (va & 0xfff);
@@ -203,7 +238,7 @@ uint64_t MMU::Translate(uint32_t va, Access access) {
         pte = ReadWordPhysAddr(pte_addr);
 
         if (!(pte & VBIT))
-            throw PageFaultException("Page fault\n", pte);
+            throw PageFaultException("Page fault", pte);
 
         if (!(pte & RBIT) && ((pte & WBIT) == WBIT))
             throw PageFaultException("Page fault: WRITE access but not READ", pte);
@@ -220,16 +255,16 @@ uint64_t MMU::Translate(uint32_t va, Access access) {
     if ((access == READ  && !(pte & RBIT)) ||
         (access == WRITE && !(pte & WBIT)) ||
         (access == EXEC  && !(pte & XBIT)))
-        throw PageFaultException("Page fault: access type\n", pte);
+        throw PageFaultException("Page fault: access type", pte);
 
     if ((level > 0) && ((pte >> 10) & 0x3ff))
-        throw PageFaultException("Page fault: superpage\n", pte);
+        throw PageFaultException("Page fault: superpage", pte);
 
     if (!(pte & ABIT))
-        throw PageFaultException("Page fault: access bit\n", pte);
+        throw PageFaultException("Page fault: access bit", pte);
 
     if ((access == WRITE) && !(pte & DBIT))
-        throw PageFaultException("Page fault: dirty bit\n", pte);
+        throw PageFaultException("Page fault: dirty bit", pte);
 
     uint64_t pa = va & 0xfff;
 

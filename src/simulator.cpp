@@ -29,9 +29,9 @@ void Simulator::Execute() {
         std::cout << e.what() << std::endl;
     } catch (UnalignException& e) {
         std::cout << e.what() << std::endl;
-    } catch (PageFaultException& e) {
+    }/* catch (PageFaultException& e) {
         std::cout << e.what() << std::endl;
-    }
+    }*/
     std::cout << "I executed all instructions " << std::dec << machine_state.GetCmdCount() << std::endl;
     std::chrono::high_resolution_clock::time_point t_finish = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> ex_time = std::chrono::duration_cast<std::chrono::duration<double>>(t_finish - t_start);

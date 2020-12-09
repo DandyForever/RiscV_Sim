@@ -7,6 +7,8 @@ BasicBlock::BasicBlock (MachineState& state, Decoder& decoder) noexcept
     do 
     {
         cur_instr = state.Fetch(state.GetPC() + 4 * i);
+        if (!cur_instr)
+            continue;
         instructions[i] = decoder.Decode(cur_instr);
         i++;
     }
