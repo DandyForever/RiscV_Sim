@@ -17,3 +17,4 @@ private:
     MachineState& machine_state;
     Decoder decoder;
 };
+

@@ -5,6 +5,10 @@
 #include "exception.h"
 #include "instruction.h"
 
+inline void pf_handler(MachineState* state, uint32_t va) {
+    state -> SetStval(va);
+}
+
 class Instruction;
 
 void Execute(uint32_t &raw_instr, MachineState *state);

@@ -27,58 +27,79 @@ void ORIExec    (const Instruction* instr, const Instruction* first, MachineStat
     PC_next;
 }
 
-void ANDIExec   (const Instruction* instr, const Instruction* first, MachineState* state) {
+void ANDIExec   (const Instruction* instr, const Instruction* first, MachineState* state) { 
     state->SetReg(instr->GetRd(), state->GetReg(instr->GetRs1()) & instr->GetImm());
     PC_next;
 }
 
 void SBExec     (const Instruction* instr, const Instruction* first, MachineState* state) {
-    state->WriteByte (instr->GetImm() + static_cast<int32_t>(state->GetReg(instr->GetRs1())), state->GetReg(instr->GetRs2()));
+    auto va = instr->GetImm() + static_cast<int32_t>(state->GetReg(instr->GetRs1()));
+    if (!state->WriteByte (va, state->GetReg(instr->GetRs2())))
+        pf_handler(state, va);
     PC_next;
 }
 
 void SHExec     (const Instruction* instr, const Instruction* first, MachineState* state) {
-    state->WriteHalfWord (instr->GetImm() + static_cast<int32_t>(state->GetReg(instr->GetRs1())), state->GetReg(instr->GetRs2()));
+    auto va = instr->GetImm() + static_cast<int32_t>(state->GetReg(instr->GetRs1()));
+    if (!state->WriteHalfWord (va, state->GetReg(instr->GetRs2())))
+        pf_handler(state, va);
     PC_next;
 }
 
 void SWExec     (const Instruction* instr, const Instruction* first, MachineState* state) {
-    state->WriteWord (instr->GetImm() + static_cast<int32_t>(state->GetReg(instr->GetRs1())), state->GetReg(instr->GetRs2()));
+    auto va = instr->GetImm() + static_cast<int32_t>(state->GetReg(instr->GetRs1()));
+    if (!state->WriteWord (va, state->GetReg(instr->GetRs2())))
+        pf_handler(state, va);
     PC_next;
 }
 
 void LBExec     (const Instruction* instr, const Instruction* first, MachineState* state) {
-    auto tmp = state->ReadByte (instr->GetImm() + state->GetReg(instr->GetRs1()));
+    auto va = instr->GetImm() + state->GetReg(instr->GetRs1());
+    auto tmp = state->ReadByte (va);
     if (tmp.first)
         state->SetReg(instr->GetRd(), static_cast<int32_t>(static_cast<int8_t>(tmp.second)));
+    else
+        pf_handler(state, va);
     PC_next;
 }
 
 void LHExec     (const Instruction* instr, const Instruction* first, MachineState* state) {
-    auto tmp = state->ReadHalfWord (instr->GetImm() + state->GetReg(instr->GetRs1()));
+    auto va = instr->GetImm() + state->GetReg(instr->GetRs1());
+    auto tmp = state->ReadHalfWord (va);
     if (tmp.first)
         state->SetReg(instr->GetRd(), static_cast<int32_t>(static_cast<int16_t>(tmp.second)));
+    else
+        pf_handler(state, va);
     PC_next;
 }
 
 void LWExec     (const Instruction* instr, const Instruction* first, MachineState* state) {
-    auto tmp = state->ReadWord (instr->GetImm() + state->GetReg(instr->GetRs1()));
+    auto va = instr->GetImm() + state->GetReg(instr->GetRs1());
+    auto tmp = state->ReadWord (va);
     if (tmp.first)
         state->SetReg(instr->GetRd(), static_cast<int32_t>(tmp.second));
+    else
+        pf_handler(state, va);
     PC_next;
 }
 
 void LBUExec    (const Instruction* instr, const Instruction* first, MachineState* state) {
-    auto tmp = state->ReadByte (instr->GetImm() + state->GetReg(instr->GetRs1()));
+    auto va = instr->GetImm() + state->GetReg(instr->GetRs1());
+    auto tmp = state->ReadByte (va);
     if (tmp.first)
         state->SetReg(instr->GetRd(), static_cast <uint32_t>(tmp.second));
+    else
+        pf_handler(state, va);
     PC_next;
 }
 
 void LHUExec    (const Instruction* instr, const Instruction* first, MachineState* state) {
-    auto tmp = state->ReadHalfWord (instr->GetImm() + state->GetReg(instr->GetRs1()));
+    auto va = instr->GetImm() + state->GetReg(instr->GetRs1()); 
+    auto tmp = state->ReadHalfWord (va);
     if (tmp.first)
         state->SetReg(instr->GetRd(), static_cast <uint32_t>(tmp.second));
+    else
+        pf_handler(state, va);
     PC_next;
 }
 

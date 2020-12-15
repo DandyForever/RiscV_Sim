@@ -3,13 +3,15 @@
 BasicBlock::BasicBlock (MachineState& state, Decoder& decoder) noexcept
 {
     uint32_t i = 0;
-    uint32_t cur_instr = 0;
     do 
     {
-        cur_instr = state.Fetch(state.GetPC() + 4 * i);
-        if (!cur_instr)
+        auto va = state.GetPC() + 4 * i;
+        auto cur_instr = state.Fetch(va);
+        if (!cur_instr.first) {
+            pf_handler(&state, va);
             continue;
-        instructions[i] = decoder.Decode(cur_instr);
+        }
+        instructions[i] = decoder.Decode(cur_instr.second);
         i++;
     }
     while ((i < block_size) && instructions[i - 1].GetBBEnd());

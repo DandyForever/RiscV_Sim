@@ -29,12 +29,7 @@ void MMU::WriteWordVirtAddr(uint32_t va, uint32_t data) {
     else {
         ppn = W_TLB.get(va >> 12);
         if (!ppn) {
-            try {
-                pa = Translate(va, WRITE);
-            } catch (PageFaultException& e) {
-                std::cout << e.what() << " pte: " << e.GetPte() << std::endl;
-                return;
-            }
+            pa = Translate(va, WRITE);
             W_TLB.put(va >> 12, pa >> 12);
         } else
             pa = (*ppn << 12) | (va & 0xfff);
@@ -62,12 +57,7 @@ void MMU::WriteHalfWordVirtAddr(uint32_t va, uint16_t data) {
     else {
         ppn = W_TLB.get(va >> 12);
         if (!ppn) {
-            try {
-                pa = Translate(va, WRITE);
-            } catch (PageFaultException& e) {
-                std::cout << e.what() << " pte: " << e.GetPte() << std::endl;
-                return;
-            }
+            pa = Translate(va, WRITE);
             W_TLB.put(va >> 12, pa >> 12);
         } else
             pa = (*ppn << 12) | (va & 0xfff);
@@ -92,12 +82,7 @@ void MMU::WriteByteVirtAddr(uint32_t va, uint8_t data) {
     else {
         ppn = W_TLB.get(va >> 12);
         if (!ppn) {
-            try {
-                pa = Translate(va, WRITE);
-            } catch (PageFaultException& e) {
-                std::cout << e.what() << " pte: " << e.GetPte() << std::endl;
-                return;
-            }
+            pa = Translate(va, WRITE);
             W_TLB.put(va >> 12, pa >> 12);
         } else
             pa = (*ppn << 12) | (va & 0xfff);
@@ -124,12 +109,7 @@ uint32_t MMU::ReadWordVirtAddr(uint32_t va) {
     else {
         ppn = R_TLB.get(va >> 12);
         if (!ppn) {
-            try {
-                pa = Translate(va, READ);
-            } catch (PageFaultException& e) {
-                std::cout << e.what() << " pte: " << e.GetPte() << std::endl;
-                return 0;
-            }
+            pa = Translate(va, READ);
             R_TLB.put(va >> 12, pa >> 12);
         } else
             pa = (*ppn << 12) | (va & 0xfff);
@@ -192,7 +172,6 @@ uint8_t MMU::ReadByteVirtAddr(uint32_t va) {
     }
 
     return ReadBytePhysAddr(pa);
-
 }
 
 uint32_t MMU::Fetch(uint32_t va) {
@@ -203,12 +182,7 @@ uint32_t MMU::Fetch(uint32_t va) {
     else {
         ppn = X_TLB.get(va >> 12);
         if (!ppn) {
-            try {
-                pa = Translate(va, EXEC);
-            } catch (PageFaultException& e) {
-                std::cout << e.what() << " pte: " << e.GetPte() << std::endl;
-                return 0;
-            }
+            pa = Translate(va, EXEC);
             X_TLB.put(va >> 12, pa >> 12);
         } else
             pa = (*ppn << 12) | (va & 0xfff);

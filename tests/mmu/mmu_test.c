@@ -19,7 +19,7 @@ int main()
 	
 
 	//*(uint32_t*)0x0100faa0 = 0xdeadbeef;
-	*(uint32_t*)0x1100 = 0xdeadbeef;
+	*(uint32_t*)0x1111 = 0xdeadbeef;
 	
     //if(*(uint32_t*)0x80200aa0 != 0xdeadbeef)
 	//	while(1) {}

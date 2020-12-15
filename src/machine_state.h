@@ -20,12 +20,14 @@ public:
 
     inline void SetPC(uint32_t value) { pc = value; }
 
+    inline void SetStval(uint32_t value) { stval = value; }
+
     inline void SetReg(uint8_t num, uint32_t value) {
     if (num >= regs_num)
         errx(EXIT_FAILURE, "Such register (%d) doesn't exist", num);
     else
         regs[num] = value;
-}
+    }
 
     inline uint32_t GetSatp() { return mmu.GetSatp(); }
 
@@ -35,19 +37,37 @@ public:
     if (num >= regs_num)
         errx(EXIT_FAILURE, "Such register (%d) doesn't exist", num);
     return regs[num];
-}
-
-
-    inline void WriteWord(uint32_t va, uint32_t data) {
-        mmu.WriteWordVirtAddr(va, data);
     }
 
-    inline void WriteHalfWord(uint32_t va, uint16_t data) {
-        mmu.WriteHalfWordVirtAddr(va, data);
+
+    inline bool WriteWord(uint32_t va, uint32_t data) {
+        try {
+            mmu.WriteWordVirtAddr(va, data);
+            return true;
+        } catch (PageFaultException& e) {
+            std::cout << e.what() << " pte: " << e.GetPte() << std::endl;
+            return false;
+        }
     }
 
-    inline void WriteByte(uint32_t va, uint8_t data) {
-       mmu.WriteByteVirtAddr(va, data);
+    inline bool WriteHalfWord(uint32_t va, uint16_t data) {
+        try {
+            mmu.WriteHalfWordVirtAddr(va, data);
+            return true;
+        } catch (PageFaultException& e) {
+            std::cout << e.what() << " pte: " << e.GetPte() << std::endl;
+            return false;
+        }
+    }
+
+    inline bool WriteByte(uint32_t va, uint8_t data) {
+        try {
+            mmu.WriteByteVirtAddr(va, data);
+            return true;
+        } catch (PageFaultException& e) {
+            std::cout << e.what() << " pte: " << e.GetPte() << std::endl;
+            return false;
+        }
     }
 
     inline std::pair<bool, uint32_t> ReadWord(uint32_t va) {
@@ -77,8 +97,13 @@ public:
         }
     }
 
-    inline uint32_t Fetch(uint32_t va) {
-        return mmu.Fetch(va);
+    inline std::pair<bool, uint32_t> Fetch(uint32_t va) {
+        try {
+            return {true, mmu.Fetch(va)};
+        } catch (PageFaultException& e) {
+            std::cout << e.what() << " pte: " << e.GetPte() << std::endl;
+            return {false, 0};
+        }
     }
 
     inline void IncreaseCmdCount(uint32_t value)
@@ -101,5 +126,6 @@ private:
     uint32_t pc;
     uint32_t regs[33];
     MMU mmu;
+    uint32_t stval = 0;
     uint32_t cmd_counter = 0;
 };

@@ -3,6 +3,7 @@
 #include <exception>
 #include <stdint.h>
 
+class MachineState;
 
 class EndException : public std::exception {
 private:
@@ -112,4 +113,6 @@ public:
     uint32_t GetPte() {
         return pte;
     }
+    
 };
+
