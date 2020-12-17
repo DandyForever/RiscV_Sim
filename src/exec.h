@@ -5,8 +5,35 @@
 #include "exception.h"
 #include "instruction.h"
 
-inline void pf_handler(MachineState* state, uint32_t va) {
+enum Access {
+    READ,
+    WRITE,
+    EXEC
+};
+
+inline void pf_handler(MachineState* state, uint32_t i_va, uint32_t va, Access access) {
+    if (access == EXEC)
+        state->SetScause(12);
+    else if (access == READ)
+        state->SetScause(13);
+    else if (access == WRITE)
+        state->SetScause(15);
+
+    if (state->GetMode() != state->USER_MODE)
+        state->SetSstatus(1 << 8);
+
+    if (state->GetMode() == state->SV_MODE) {
+        uint32_t stvec = state->GetStvec();
+        if (!(stvec & 0x11))
+            state->SetPC(stvec >> 2);
+        else if ((stvec & 0x11) == 0x01)
+            state->SetPC((stvec >> 2) + 4 * state->GetScause());
+    }
+
+    state->SetSepc(i_va);
+
     state -> SetStval(va);
+
 }
 
 class Instruction;

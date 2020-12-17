@@ -8,10 +8,11 @@ BasicBlock::BasicBlock (MachineState& state, Decoder& decoder) noexcept
         auto va = state.GetPC() + 4 * i;
         auto cur_instr = state.Fetch(va);
         if (!cur_instr.first) {
-            pf_handler(&state, va);
+            pf_handler(&state, va, va, EXEC);
             continue;
         }
         instructions[i] = decoder.Decode(cur_instr.second);
+        instructions[i].SetVa(va);
         i++;
     }
     while ((i < block_size) && instructions[i - 1].GetBBEnd());

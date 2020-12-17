@@ -12,6 +12,7 @@ private:
     uint8_t funct7 = 0;
     uint32_t imm = 0;
     bool BBEnd;
+    uint32_t va;
 
     void (*cmd)(const Instruction *, const Instruction *, MachineState *);
 
@@ -44,6 +45,14 @@ public:
 
     inline uint32_t GetImm() const {
         return imm;
+    }
+
+    inline uint32_t GetVa() const {
+        return va;
+    }
+
+    inline void SetVa(uint32_t value) {
+        va = value;
     }
 
     inline void SetRd(uint8_t rd) {

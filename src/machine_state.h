@@ -22,6 +22,22 @@ public:
 
     inline void SetStval(uint32_t value) { stval = value; }
 
+    inline void SetSstatus(uint32_t value) { sstatus = value; }
+
+    inline void SetScause(uint32_t value) { scause = value; }
+
+    inline void SetSscratch(uint32_t value) { sscratch = value; }
+
+    inline void SetUscratch(uint32_t value) { uscratch = value; }
+
+    inline void SetSepc(uint32_t value) { sepc = value; }
+
+    inline uint32_t GetStvec() { return stvec; }
+
+    inline uint32_t GetSscratch() { return sscratch; }
+
+    inline uint32_t GetUscratch() { return uscratch; }
+
     inline void SetReg(uint8_t num, uint32_t value) {
     if (num >= regs_num)
         errx(EXIT_FAILURE, "Such register (%d) doesn't exist", num);
@@ -31,7 +47,11 @@ public:
 
     inline uint32_t GetSatp() { return mmu.GetSatp(); }
 
+    inline uint32_t GetMode() { return mode; }
+
     inline uint32_t GetPC() { return pc; }
+
+    inline uint32_t GetScause() { return scause; }
 
     inline uint32_t GetReg(uint8_t num) {
     if (num >= regs_num)
@@ -122,10 +142,20 @@ public:
         }
     }
 
+    const uint32_t USER_MODE = 0;
+    const uint32_t SV_MODE = 1;
+
 private:
     uint32_t pc;
     uint32_t regs[33];
     MMU mmu;
     uint32_t stval = 0;
+    uint32_t sstatus = 0;
+    uint32_t scause = 0;
+    uint32_t stvec = 0;
+    uint32_t sscratch = 0;
+    uint32_t uscratch = 0;
+    uint32_t sepc = 0;
+    uint32_t mode = USER_MODE;
     uint32_t cmd_counter = 0;
 };

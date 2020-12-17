@@ -35,21 +35,21 @@ void ANDIExec   (const Instruction* instr, const Instruction* first, MachineStat
 void SBExec     (const Instruction* instr, const Instruction* first, MachineState* state) {
     auto va = instr->GetImm() + static_cast<int32_t>(state->GetReg(instr->GetRs1()));
     if (!state->WriteByte (va, state->GetReg(instr->GetRs2())))
-        pf_handler(state, va);
+        pf_handler(state, instr->GetVa(), va, WRITE);
     PC_next;
 }
 
 void SHExec     (const Instruction* instr, const Instruction* first, MachineState* state) {
     auto va = instr->GetImm() + static_cast<int32_t>(state->GetReg(instr->GetRs1()));
     if (!state->WriteHalfWord (va, state->GetReg(instr->GetRs2())))
-        pf_handler(state, va);
+        pf_handler(state, instr->GetVa(), va, WRITE);
     PC_next;
 }
 
 void SWExec     (const Instruction* instr, const Instruction* first, MachineState* state) {
     auto va = instr->GetImm() + static_cast<int32_t>(state->GetReg(instr->GetRs1()));
     if (!state->WriteWord (va, state->GetReg(instr->GetRs2())))
-        pf_handler(state, va);
+        pf_handler(state, instr->GetVa(), va, WRITE);
     PC_next;
 }
 
@@ -59,7 +59,7 @@ void LBExec     (const Instruction* instr, const Instruction* first, MachineStat
     if (tmp.first)
         state->SetReg(instr->GetRd(), static_cast<int32_t>(static_cast<int8_t>(tmp.second)));
     else
-        pf_handler(state, va);
+        pf_handler(state, instr->GetVa(), va, READ);
     PC_next;
 }
 
@@ -69,7 +69,7 @@ void LHExec     (const Instruction* instr, const Instruction* first, MachineStat
     if (tmp.first)
         state->SetReg(instr->GetRd(), static_cast<int32_t>(static_cast<int16_t>(tmp.second)));
     else
-        pf_handler(state, va);
+        pf_handler(state, instr->GetVa(), va, READ);
     PC_next;
 }
 
@@ -79,7 +79,7 @@ void LWExec     (const Instruction* instr, const Instruction* first, MachineStat
     if (tmp.first)
         state->SetReg(instr->GetRd(), static_cast<int32_t>(tmp.second));
     else
-        pf_handler(state, va);
+        pf_handler(state, instr->GetVa(), va, READ);
     PC_next;
 }
 
@@ -89,7 +89,7 @@ void LBUExec    (const Instruction* instr, const Instruction* first, MachineStat
     if (tmp.first)
         state->SetReg(instr->GetRd(), static_cast <uint32_t>(tmp.second));
     else
-        pf_handler(state, va);
+        pf_handler(state, instr->GetVa(), va, READ);
     PC_next;
 }
 
@@ -99,7 +99,7 @@ void LHUExec    (const Instruction* instr, const Instruction* first, MachineStat
     if (tmp.first)
         state->SetReg(instr->GetRd(), static_cast <uint32_t>(tmp.second));
     else
-        pf_handler(state, va);
+        pf_handler(state, instr->GetVa(), va, READ);
     PC_next;
 }
 
